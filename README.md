@@ -1,85 +1,66 @@
 # 🐳 Comandos Docker Essenciais
 
-## Imagens
+## Execuntando um Contêiner
 
-- `docker pull <imagem>`  
-  Baixa uma imagem do Docker Hub.
+```bash
+docker pull ubuntu
+docker run ubuntu
+docker run ubuntu sleep 10
+docker run ubuntu sleep 1500
+docker stop [id]
+docker run --help
+docker run -it ubuntu
 
-- `docker images`  
-  Lista as imagens disponíveis localmente.
-
-- `docker rmi <imagem>`  
-  Remove uma imagem local.
-
-- `docker build -t <nome>:<tag> .`  
-  Cria uma imagem a partir de um Dockerfile.
-
----
-
-## Containers
-
-- `docker run <imagem>`  
-  Executa um container com a imagem especificada.
-
-- `docker run -d <imagem>`  
-  Executa o container em segundo plano (detached).
-
-- `docker run -it <imagem>`  
-  Executa o container no modo interativo com terminal.
-
-- `docker run --name <nome> <imagem>`  
-  Executa o container com um nome personalizado.
-
-- `docker ps`  
-  Lista os containers em execução.
-
-- `docker ps -a`  
-  Lista todos os containers (inclusive os parados).
-
-- `docker start <nome/id>`  
-  Inicia um container parado.
-
-- `docker stop <nome/id>`  
-  Para um container em execução.
-
-- `docker restart <nome/id>`  
-  Reinicia um container.
-
-- `docker rm <nome/id>`  
-  Remove um container (precisa estar parado).
-
-- `docker exec -it <nome/id> bash`  
-  Acessa o terminal bash dentro do container.
+```
 
 ---
 
-## 📁 Volumes e Arquivos
+## Execuntando aplicação no Contêiner
 
-- `docker run -v <host>:<container> <imagem>`  
-  Monta um volume (ex: `-v $(pwd):/app`).
-
-- `docker cp <origem> <destino>`  
-  Copia arquivos de/para o container.  
-  Ex: `docker cp arquivo.txt container:/app`
+```bash
+docker run -dti  ubuntu 
+docker exec -it [id ou nome]  /bin/bash
+```
 
 ---
 
-## 🧰 Outros comandos úteis
+## Excluindo e nomeando contêiner
 
-- `docker logs <nome/id>`  
-  Exibe os logs do container.
+```bash
+docker stop [id]
+docker rm [id]
+docker rmi [imagem]
 
-- `docker inspect <nome/id>`  
-  Exibe detalhes técnicos do container ou imagem.
+docker run -dti --name Ubuntu-A ubuntu
+```
 
-- `docker network ls`  
-  Lista redes Docker.
+## Copiando arquivos para um contêiner
 
-- `docker volume ls`  
-  Lista volumes Docker.
+```bash
+docker exec -ti Ubuntu-A /bin/bash
+docker exec Ubuntu-A mkdir /destino/
+docker exec Ubuntu-A mkdir ls -l /
+nano Arquivo.txt
+docker cp arquivo.txt Ubuntu-A:/aula/
+```
 
-- `docker system prune`  
-  Remove recursos não utilizados (⚠️ use com cuidado!).
+## Criando um Contêiner do MySQL
 
----
+```bash
+docker pull mysql
+ 
+docker run -e MYSQL_ROOT_PASSWORD=Senha123 --name mysql-A -d -p 3306:3306 mysql
+
+docker exec -it mysql-A bash
+
+mysql -u root -p --protocol=tcp
+
+
+CREATE DATABASE aula;
+show databases;
+
+docker inspect mysql-A
+
+mysql -u root -p --protocol=tcp
+```
 
